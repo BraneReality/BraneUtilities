@@ -38,6 +38,17 @@ class Option
     Option(None none) : Option(Value(none)) {};
     Option(Some<V> some) : Option(Value(some)) {};
 
+    template<class T>
+    Option(Option<T> castable)
+    {
+        if(castable.isNone())
+        {
+            _value = None();
+            return;
+        }
+        _value = Some(V(castable.value()));
+    }
+
     bool isSome() const { return std::holds_alternative<Some<V>>(_value); }
 
     bool isNone() const { return std::holds_alternative<None>(_value); }
