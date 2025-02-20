@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <string>
 #include <variant>
-#include "variantMatch.h"
+#include "matchv.h"
 #include <type_traits>
 
 #define CHECK_RESULT(result)                                                                                           \
@@ -60,20 +60,11 @@ class Result
         // TODO consider if we should force result handling
     }
 
-    bool isOk() const
-    {
-        return std::holds_alternative<Ok<V>>(_value);
-    }
+    bool isOk() const { return std::holds_alternative<Ok<V>>(_value); }
 
-    bool isErr() const
-    {
-        return std::holds_alternative<Err<E>>(_value);
-    }
+    bool isErr() const { return std::holds_alternative<Err<E>>(_value); }
 
-    operator bool() const
-    {
-        return isOk();
-    }
+    operator bool() const { return isOk(); }
 
     /// consumes the result
     V ok()

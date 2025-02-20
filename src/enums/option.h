@@ -1,7 +1,6 @@
 #pragma once
 #include <functional>
 #include <variant>
-#include "serializedData.h"
 
 struct None
 {
@@ -19,18 +18,12 @@ struct Some
 
     Some(T val) : value(std::move(val)) {}
 
-    bool operator==(const Some<T>& o) const
-    {
-        return value == o.value;
-    }
+    bool operator==(const Some<T>& o) const { return value == o.value; }
 
-    bool operator!=(const Some<T>& o) const
-    {
-        return value != o.value;
-    }
+    bool operator!=(const Some<T>& o) const { return value != o.value; }
 };
 
-template<class V>
+/*template<class V>
 class Option
 
 {
@@ -141,4 +134,4 @@ struct Serializer<Option<T>>
             return Serializer<T>::write(s, value.value());
         return Ok<void>();
     }
-};
+};*/
