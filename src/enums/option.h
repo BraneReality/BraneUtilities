@@ -23,7 +23,7 @@ struct Some
     bool operator!=(const Some<T>& o) const { return value != o.value; }
 };
 
-/*template<class V>
+template<class V>
 class Option
 
 {
@@ -31,30 +31,18 @@ class Option
     Value _value;
 
   public:
-    Option()
-    {
-        _value = None();
-    }
+    Option() { _value = None(); }
 
     Option(Value value) : _value(std::move(value)) {}
 
     Option(None none) : Option(Value(none)) {};
     Option(Some<V> some) : Option(Value(some)) {};
 
-    bool isSome() const
-    {
-        return std::holds_alternative<Some<V>>(_value);
-    }
+    bool isSome() const { return std::holds_alternative<Some<V>>(_value); }
 
-    bool isNone() const
-    {
-        return std::holds_alternative<None>(_value);
-    }
+    bool isNone() const { return std::holds_alternative<None>(_value); }
 
-    operator bool() const
-    {
-        return isSome();
-    }
+    operator bool() const { return isSome(); }
 
     Option<V>& operator=(Some<V>&& s)
     {
@@ -68,15 +56,9 @@ class Option
         return *this;
     }
 
-    V& value()
-    {
-        return std::get<Some<V>>(_value).value;
-    }
+    V& value() { return std::get<Some<V>>(_value).value; }
 
-    const V& value() const
-    {
-        return std::get<Some<V>>(_value).value;
-    }
+    const V& value() const { return std::get<Some<V>>(_value).value; }
 
     template<class T>
     Option<T> map(std::function<T(V)> f)
@@ -102,12 +84,10 @@ class Option
         return value() == o.value();
     }
 
-    bool operator!=(const Option<V> o) const
-    {
-        return !(*this == o);
-    }
+    bool operator!=(const Option<V> o) const { return !(*this == o); }
 };
 
+/*
 template<class T>
 struct Serializer<Option<T>>
 {
