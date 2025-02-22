@@ -19,8 +19,10 @@ struct Ok
     static_assert(std::negation<std::is_reference<E>>(), "Results cannot contain references");
     E value;
 
+    Ok(E value) : value(std::move(value)) {}
+
     template<class T>
-    Ok(T value) : value(std::move(value))
+    Ok(Ok<T> value) : value(std::move(value.value))
     {}
 };
 
