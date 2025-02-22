@@ -55,9 +55,13 @@ class Option
 
     operator bool() const { return isSome(); }
 
-    Option<V>& operator=(Some<V>&& s)
+    template<class T>
+    Option<V>& operator=(Some<T>&& s)
     {
-        _value = std::move(s);
+        if constexpr(std::is_same<T, V>())
+            _value = std::move(s);
+        else
+            _value = Some(V(std::move(s.value)));
         return *this;
     }
 

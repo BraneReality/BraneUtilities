@@ -13,13 +13,15 @@
     if(result.isErr())                                                                                                 \
         return Err(result.err());
 
-template<class T = void>
+template<class E = void>
 struct Ok
 {
-    static_assert(std::negation<std::is_reference<T>>(), "Results cannot contain references");
-    T value;
+    static_assert(std::negation<std::is_reference<E>>(), "Results cannot contain references");
+    E value;
 
-    Ok(T val) : value(std::move(val)) {}
+    template<class T>
+    Ok(T value) : value(std::move(value))
+    {}
 };
 
 // Specialization for void
