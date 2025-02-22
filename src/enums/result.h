@@ -13,13 +13,13 @@
     if(result.isErr())                                                                                                 \
         return Err(result.err());
 
-template<class E = void>
+template<class V = void>
 struct Ok
 {
-    static_assert(std::negation<std::is_reference<E>>(), "Results cannot contain references");
-    E value;
+    static_assert(std::negation<std::is_reference<V>>(), "Results cannot contain references");
+    V value;
 
-    Ok(E value) : value(std::move(value)) {}
+    Ok(V value) : value(std::move(value)) {}
 
     template<class T>
     Ok(Ok<T> value) : value(std::move(value.value))
@@ -32,11 +32,15 @@ struct Ok<void>
 {
 };
 
-template<class T>
+template<class E>
 struct Err
 {
-    T data;
-    Err(T data) : data(std::move(data)) {};
+    E data;
+    Err(E data) : data(std::move(data)) {};
+
+    template<class T>
+    Err(Err<T> err) : data(std::move(err.data))
+    {}
 };
 
 template<class V = void, class E = std::string>
@@ -50,8 +54,10 @@ class Result
 
   public:
     Result(Value&& value) : _value(std::forward<Value>(value)) {};
-    Result(Ok<V>&& ok) : Result(Value(std::forward<Ok<V>>(ok))) {};
-    Result(Err<E>&& err) : Result(Value(std::forward<Err<E>>(err))) {};
+    template<class T>
+    Result(Ok<T>&& ok) : Result(Value(std::forward<Ok<V>>(ok))){};
+    template<class T>
+    Result(Err<T>&& err) : Result(Value(std::forward<Err<E>>(err))){};
 
     Result(Result&&) = default;
     Result(const Result&) = default;
